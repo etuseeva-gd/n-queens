@@ -16,14 +16,14 @@ public class BoardSolver implements Runnable {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (!queue.isEmpty()) {
                 // берем доску из очереди
                 Board b = queue.take();
 
                 if (b.isEnd()) {
                     // если нашли решение, то сохраняем его
-//                    result.add(b.toString());
-                    System.out.println(b.toString());
+                    result.add(b.toString());
+//                    System.out.println(b.toString());
                 } else {
                     // если нет, то ищем все след. комбинации и кладем их в очередь
                     Main.generateNextBoards(b);

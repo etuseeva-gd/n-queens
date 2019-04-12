@@ -1,13 +1,12 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.math.BigInteger;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
-    static int n = 7;
-    static int threads_len = 3;
+//    static int n = 7;
+//    static int threads_len = 3;
 
     static BlockingQueue<Board> queue = new LinkedBlockingDeque<>();
     static Set<String> result = new HashSet<>();
@@ -23,6 +22,7 @@ public class Main {
 
                     // кладем в очередь только валидные доски с королевами
                     if (b.isValid()) {
+//                        System.out.println(b.toString());
                         queue.add(b);
                     }
                 }
@@ -31,6 +31,14 @@ public class Main {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Введите n:");
+        int n = Integer.parseInt(sc.nextLine());
+
+        System.out.println("Введите число потоков:");
+        int threads_len = Integer.parseInt(sc.nextLine());
+
         // сгенерировали стартовую доску
         Board board = new Board(n);
         generateNextBoards(board);
@@ -44,15 +52,15 @@ public class Main {
             threads.get(i).start();
         }
 
-//        for (int i = 0; i < threads_len; i++) {
-//            threads.get(i).join();
-//        }
-//
-//        AtomicInteger i = new AtomicInteger();
-//        result.forEach( b -> {
-//            i.getAndIncrement();
-//            System.out.println(b);
-//        });
-//        System.out.println(i);
+        for (int i = 0; i < threads_len; i++) {
+            threads.get(i).join();
+        }
+
+        AtomicInteger i = new AtomicInteger();
+        result.forEach( b -> {
+            i.getAndIncrement();
+            System.out.println(b);
+        });
+        System.out.println(i);
     }
 }
